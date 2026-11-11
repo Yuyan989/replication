@@ -306,5 +306,14 @@ encode sex, gen(sex_num)
 eststo m2: reg call white i.city_num i.sex_num i.h i.education years_exp computer_skills special_skills, robust
 
 
+* --------------------------
+* Stage 6: Explore heterogeneity
+* --------------------------
+* generate interaction term: white × high quality resume
+gen white_h = white * h
+
+* regression with interaction + all previous controls
+eststo m3: reg call white white_h h i.city_num i.sex_num i.education years_exp computer_skills special_skills, robust
+
 
 
