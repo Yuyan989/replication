@@ -283,3 +283,17 @@ putdocx table master(15,5) = ("`mal_p'")
 
 capture erase "$output/descriptive_results.docx"
 putdocx save "$output/descriptive_results.docx", replace
+
+* --------------------------
+* Stage 4: Estimate the baseline effect
+* --------------------------
+* create dummy for white-sounding name
+gen white = (race == "w")
+
+* OLS: linear probability model (LPM)
+eststo m1: reg call white, robust
+
+* show group means manually, verify beta = mean(call|white=1) - mean(call|white=0)
+summ call if white == 1
+summ call if white == 0
+
