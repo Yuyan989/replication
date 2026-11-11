@@ -317,3 +317,25 @@ eststo m3: reg call white white_h h i.city_num i.sex_num i.education years_exp c
 
 
 
+* --------------------------
+* Stage 7: Stress-test inference
+* --------------------------
+* (1) Homoskedastic standard errors (default)
+eststo m4: reg call white i.city_num i.sex_num i.h i.education years_exp computer_skills special_skills
+
+* (2) Heteroskedasticity-robust standard errors
+eststo m5: reg call white i.city_num i.sex_num i.h i.education years_exp computer_skills special_skills, robust
+
+* (3) Cluster-robust standard errors, cluster at ad_id level (preferred inference)
+eststo m6: reg call white i.city_num i.sex_num i.h i.education years_exp computer_skills special_skills, cluster(ad_id)
+
+
+esttab m1 m2 m3 m4 m5 m6 using "$output/regression_results.rtf", replace ///
+    se star(* 0.10 ** 0.05 *** 0.01) ///
+    stats(N r2 r2_a, labels("N" "R²" "Adj. R²") fmt(%9.0fc 3 3)) ///
+    mtitles("LPM" "Precision" "Heterogeneity" "Homoskedastic" "Robust" "Cluster") ///
+    label ///
+    addnotes("Columns (1)-(6) progressively add controls and change inference. " ///
+             "Cluster-robust SEs by ad_id in column (6). * p<0.10, ** p<0.05, *** p<0.01.")
+			 
+
