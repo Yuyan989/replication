@@ -297,3 +297,14 @@ eststo m1: reg call white, robust
 summ call if white == 1
 summ call if white == 0
 
+
+* --------------------------
+* Stage 5: Add precision controls
+* --------------------------
+encode city, gen(city_num)
+encode sex, gen(sex_num)
+eststo m2: reg call white i.city_num i.sex_num i.h i.education years_exp computer_skills special_skills, robust
+
+
+
+
