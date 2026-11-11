@@ -15,3 +15,11 @@ global output "$root/output"
 foreach folder in raw process output {
     capture mkdir "$root/`folder'"
 }
+
+* --------------------------
+* 1.Import raw csv data
+* --------------------------
+import delimited "$raw/labor_market_discrimination.csv", clear
+
+* Save processed dataset
+save "$process/labor_discrimination_processed.dta", replace
